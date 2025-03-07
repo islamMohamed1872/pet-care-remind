@@ -1,0 +1,2 @@
+C:/Users/eslam/AndroidStudioProjects/petcarereminder/android/app/.cxx/Debug/4d392o5b/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/eslam/AndroidStudioProjects/petcarereminder/android/app/.cxx/Debug/4d392o5b/armeabi-v7a/CMakeFiles/rebuild_cache.dir
