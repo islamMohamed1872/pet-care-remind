@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:petcarereminder/Helpers/DBHelper.dart';
 import 'package:petcarereminder/cubit/home_states.dart';
 import 'package:sqflite/sqflite.dart';
@@ -13,6 +14,9 @@ class HomeCubit extends Cubit<HomeStates> {
     setDatabase();
   }
   static HomeCubit get(context)=>BlocProvider.of(context);
+
+
+
 
   late Database database;
   void setDatabase() async {

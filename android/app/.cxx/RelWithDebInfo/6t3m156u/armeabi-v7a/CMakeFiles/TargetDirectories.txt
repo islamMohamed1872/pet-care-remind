@@ -1,0 +1,2 @@
+D:/work/petcarereminder/android/app/.cxx/RelWithDebInfo/6t3m156u/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/work/petcarereminder/android/app/.cxx/RelWithDebInfo/6t3m156u/armeabi-v7a/CMakeFiles/rebuild_cache.dir

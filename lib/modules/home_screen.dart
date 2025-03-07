@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:petcarereminder/components/components.dart';
 import 'package:petcarereminder/components/constants.dart';
 import 'package:petcarereminder/cubit/home_cubit.dart';
 import 'package:petcarereminder/cubit/home_states.dart';
 
+
 import '../Helpers/DBHelper.dart';
+import '../helpers/notification_helper.dart';
 import 'new_task_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -79,8 +82,10 @@ class HomeScreen extends StatelessWidget {
                       ),
                       const Spacer(),
                       InkWell(
-                        onTap: () {
+                        onTap: ()async {
                           navigateTo(context, NewTaskScreen());
+
+
                         },
                         child: Container(
                           width: width / 3,

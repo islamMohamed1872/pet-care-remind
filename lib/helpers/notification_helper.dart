@@ -4,8 +4,6 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter/material.dart';
 
-
-
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
 
@@ -43,6 +41,26 @@ class NotificationService {
     );
 
     await requestNotificationPermissions(); // Request notification permissions
+    await requestOverlayPermission(); // Request overlay permission
+  }
+
+  Future<void> requestOverlayPermission() async {
+    if (!await Permission.systemAlertWindow.isGranted) {
+
+      await Permission.systemAlertWindow.request();
+
+
+      if (!await Permission.systemAlertWindow.isGranted) {
+        debugPrint('Overlay permission denied. Please enable it manually in settings.');
+
+      }
+    }
+
+    if (await Permission.systemAlertWindow.isGranted) {
+      debugPrint('Overlay permission granted');
+    } else {
+      debugPrint('Overlay permission denied');
+    }
   }
 
   Future<void> requestNotificationPermissions() async {
@@ -56,10 +74,20 @@ class NotificationService {
       debugPrint('Notification permissions denied');
     }
   }
-
-  Future<void> scheduleDailyNotification(DateTime selectedTime,String title,String description) async {
+  Future<void> showInstantNotification(String title, String description) async {
+    try {
+      await _notificationsPlugin.show(
+        0,
+        title,
+        description,
+        _notificationDetails(title,description),
+      );
+    } catch (e) {
+      debugPrint('Error showing notification: $e');
+    }
+  }
+  Future<void> scheduleDailyNotification(DateTime selectedTime, String title, String description) async {
     final tz.TZDateTime scheduledTime = tz.TZDateTime.from(selectedTime, tz.local);
-
 
     try {
       await _notificationsPlugin.zonedSchedule(
@@ -67,7 +95,7 @@ class NotificationService {
         title,
         description,
         scheduledTime,
-        _notificationDetails(),
+        _notificationDetails(title,description),
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time,
@@ -77,19 +105,32 @@ class NotificationService {
     }
   }
 
-  NotificationDetails _notificationDetails() {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
-      'test_channel',
-      'Test Notifications',
+  NotificationDetails _notificationDetails(String title, String message) {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'test_channel', // Channel ID
+      'Test Notifications', // Channel name
       channelDescription: 'Channel for test notifications',
       importance: Importance.max,
       priority: Priority.high,
-      showWhen: false,
+      fullScreenIntent: true,
+      ticker: 'ticker',
+      icon: 'paw',
+      color: Color(0xFF008000),
+      enableLights: true,
+      ledColor: Color(0xFF008000),
+      ledOnMs: 1000,
+      ledOffMs: 500,
+      styleInformation: BigPictureStyleInformation(
+        DrawableResourceAndroidBitmap('green_background'),
+        largeIcon: DrawableResourceAndroidBitmap('paw'),
+        contentTitle: '<font color="#008000"><b>title</b></font>',
+        htmlFormatContentTitle: true,
+        summaryText: '<font color="#FFFFFF">message</font>',
+        htmlFormatSummaryText: true,
+      ),
     );
 
-    const DarwinNotificationDetails iOSPlatformChannelSpecifics =
-    DarwinNotificationDetails();
+    const DarwinNotificationDetails iOSPlatformChannelSpecifics = DarwinNotificationDetails();
 
     return const NotificationDetails(
       android: androidPlatformChannelSpecifics,
@@ -97,10 +138,13 @@ class NotificationService {
     );
   }
 
+
+
   void onDidReceiveNotificationResponse(NotificationResponse response) {
     debugPrint('Notification tapped with payload: ${response.payload}');
   }
 }
+
 void onDidReceiveBackgroundNotificationResponse(NotificationResponse response) {
   debugPrint('Background notification tapped with payload: ${response.payload}');
 }
