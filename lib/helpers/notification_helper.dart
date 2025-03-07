@@ -106,7 +106,7 @@ class NotificationService {
   }
 
   NotificationDetails _notificationDetails(String title, String message) {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'test_channel', // Channel ID
       'Test Notifications', // Channel name
       channelDescription: 'Channel for test notifications',
@@ -123,16 +123,16 @@ class NotificationService {
       styleInformation: BigPictureStyleInformation(
         DrawableResourceAndroidBitmap('green_background'),
         largeIcon: DrawableResourceAndroidBitmap('paw'),
-        contentTitle: '<font color="#008000"><b>title</b></font>',
+        contentTitle: '<font color="#008000"><b>$title</b></font>',
         htmlFormatContentTitle: true,
-        summaryText: '<font color="#FFFFFF">message</font>',
+        summaryText: '<font color="#FFFFFF">$message</font>',
         htmlFormatSummaryText: true,
       ),
     );
 
     const DarwinNotificationDetails iOSPlatformChannelSpecifics = DarwinNotificationDetails();
 
-    return const NotificationDetails(
+    return   NotificationDetails(
       android: androidPlatformChannelSpecifics,
       iOS: iOSPlatformChannelSpecifics,
     );

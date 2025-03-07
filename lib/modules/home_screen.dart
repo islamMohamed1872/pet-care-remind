@@ -84,8 +84,6 @@ class HomeScreen extends StatelessWidget {
                       InkWell(
                         onTap: ()async {
                           navigateTo(context, NewTaskScreen());
-
-
                         },
                         child: Container(
                           width: width / 3,
